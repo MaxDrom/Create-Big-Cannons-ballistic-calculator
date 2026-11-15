@@ -18,6 +18,7 @@ bool binarySearch(Fn &&f, Real a, Real b, Real &result, Real f1, Real f2) {
       return false;
     mid = (a + b) / 2;
     fmid = std::invoke_r<Real>(f, mid);
+    dx *= 0.5;
     if (fmid * f1 > 0) {
       a = mid;
       f1 = fmid;
@@ -25,7 +26,6 @@ bool binarySearch(Fn &&f, Real a, Real b, Real &result, Real f1, Real f2) {
     }
     b = mid;
     f2 = fmid;
-    dx *= 0.5;
   }
   result = mid;
   return true;
