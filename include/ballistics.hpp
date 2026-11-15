@@ -1,4 +1,5 @@
 #pragma once
+#include <numbers>
 #include <utils.hpp>
 
 struct Result {
@@ -58,13 +59,17 @@ public:
       if (binarySearch(eq, 0, max_z, z))
         results.push_back(fromZL(z, l));
     }
-    // if (h < 0) {
-    //   auto min_angle = std::atan2(h, l) * 180 / std::numbers::pi;
-    //   Real result;
-    //   if (binarySearch([this](Real angle)->Real{
-    //
-    //               }, min_angle, 0, result))
-    // }
+    if (h < 0) {
+      Real result;
+      auto eq_minus = [this, l, h](Real z) -> Real { return _y(z, l, -1) - h; };
+
+      if(binarySearch(eq_minus, 0, 1, result))
+      {
+        auto rr = fromZL(result, l);
+        rr.angle = -rr.angle;
+        results.push_back(rr);
+      }
+    }
   }
 
   Real y(Real t, Real angle) const {
@@ -89,12 +94,12 @@ private:
     return Result{angle, y(time_max, angle), timeFromZ(z)};
   }
 
-  Real z_eq(Real z, Real l) const {
+  Real z_eq(Real z, Real l, Real signum = 1) const {
     auto K = l * drag / (1 - drag * 0.5);
     Real v0y = velocity * velocity - K * K / ((1 - z) * (1 - z));
     if (v0y < 0)
       v0y = 0;
-    v0y = sqrt(v0y);
+    v0y = signum*sqrt(v0y);
     return g / (z * std::log(1 - drag)) * (0.5 + 1 / drag) -
            (1 - drag * 0.5) * (v0y - g / drag) / drag -
            (1 - drag * 0.5) * K * K / (drag * v0y * (1 - z) * (1 - z));
@@ -107,12 +112,12 @@ private:
            std::numbers::pi * 180;
   }
 
-  Real _y(Real z, Real l) const {
+  Real _y(Real z, Real l, Real signum = 1) const {
     auto K = l * drag / (1 - drag * 0.5);
     Real v0y = velocity * velocity - K * K / ((1 - z) * (1 - z));
     if (v0y < 0)
       v0y = 0;
-    v0y = sqrt(v0y);
+    v0y = signum*sqrt(v0y);
     return log(z) / log(1 - drag) * (0.5 + 1 / drag) * g +
            (1 - drag * 0.5) * (v0y - g / drag) * (1 - z) / drag;
   }
