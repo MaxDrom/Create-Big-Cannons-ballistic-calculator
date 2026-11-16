@@ -26,3 +26,19 @@ target_compile_options(ballistics_py PRIVATE -O3 -march=native)
 target_link_libraries(ballistics_py PRIVATE pybind11::module Python::Python)
 
 add_custom_command(TARGET ballistics_py POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/src/main.py ${CMAKE_CURRENT_BINARY_DIR} )
+
+# Стендаонный C++ пример (без Python)
+add_executable(ballistics_example ${CMAKE_CURRENT_SOURCE_DIR}/src/example.cpp)
+target_include_directories(ballistics_example PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_compile_options(ballistics_example PRIVATE -O3 -march=native)
+
+# Тесты квадратичной баллистики (V = 8, drag = 0.001, k = 6)
+enable_testing()
+add_executable(ballistics_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_quadratic.cpp)
+target_include_directories(ballistics_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_compile_options(ballistics_test PRIVATE -O3 -march=native)
+add_test(NAME ballistics_test COMMAND ballistics_test)

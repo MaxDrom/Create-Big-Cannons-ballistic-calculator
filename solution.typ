@@ -19,7 +19,7 @@ $<base>
     $
       cases(
         v(t) = v^0 (1-d)^t + g (1-(1-d)^t)/d,
-        x(t) = x^0 + t/2 g + (1- d/2)(v^0 - g/d) (1-(1-d)^t)/d + t/d g
+        x(t) = x^0 + (1- d/2)(v^0 - g/d) (1-(1-d)^t)/d + t/d g
       )
     $<solution>
   ],

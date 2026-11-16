@@ -1,6 +1,8 @@
 #include <ballistics.hpp>
+#include <model.hpp>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
+#include <solver.hpp>
 #include <vector>
 namespace py = pybind11;
 
@@ -29,6 +31,29 @@ PYBIND11_MODULE(ballistics_py, m, py::mod_gil_not_used()) {
              }
              for (auto v : result_v)
                result.append(v);
+             return result;
+           });
+  py::class_<Solution>(m, "Solution")
+      .def_readonly("theta", &Solution::theta)
+      .def_readonly("time", &Solution::time);
+  py::class_<Solver<QuadraticModel>>(m, "QuadraticSolver")
+      .def(py::init([](double drag, double velocity, double barrel, double g) {
+             return Solver<QuadraticModel>{QuadraticModel{drag, g}, velocity,
+                                           barrel};
+           }),
+           py::arg("drag"), py::arg("velocity"), py::arg("barrel"),
+           py::arg("g"))
+      .def("find",
+           [](const Solver<QuadraticModel> &self, double l,
+              double h) -> py::list {
+             auto result = py::list{};
+             std::vector<Solution> sols;
+             {
+               py::gil_scoped_release release;
+               sols = self.find(l, h);
+             }
+             for (auto &s : sols)
+               result.append(s);
              return result;
            });
 }

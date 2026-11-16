@@ -63,8 +63,7 @@ public:
       Real result;
       auto eq_minus = [this, l, h](Real z) -> Real { return _y(z, l, -1) - h; };
 
-      if(binarySearch(eq_minus, 0, 1, result))
-      {
+      if (binarySearch(eq_minus, 0, 1, result)) {
         auto rr = fromZL(result, l);
         rr.angle = -rr.angle;
         results.push_back(rr);
@@ -75,8 +74,7 @@ public:
   Real y(Real t, Real angle) const {
     Real z = std::pow(1 - drag, t);
     Real v0y = velocity * std::sin(angle / 180 * std::numbers::pi);
-    return t * (0.5 + 1 / drag) * g +
-           (1 - drag * 0.5) * (v0y - g / drag) * (1 - z) / drag;
+    return t / drag * g + (1 - drag * 0.5) * (v0y - g / drag) * (1 - z) / drag;
   }
 
   Real x(Real t, Real angle) const {
@@ -99,8 +97,8 @@ private:
     Real v0y = velocity * velocity - K * K / ((1 - z) * (1 - z));
     if (v0y < 0)
       v0y = 0;
-    v0y = signum*sqrt(v0y);
-    return g / (z * std::log(1 - drag)) * (0.5 + 1 / drag) -
+    v0y = signum * sqrt(v0y);
+    return g / (z * std::log(1 - drag)) / drag -
            (1 - drag * 0.5) * (v0y - g / drag) / drag -
            (1 - drag * 0.5) * K * K / (drag * v0y * (1 - z) * (1 - z));
   }
@@ -117,8 +115,8 @@ private:
     Real v0y = velocity * velocity - K * K / ((1 - z) * (1 - z));
     if (v0y < 0)
       v0y = 0;
-    v0y = signum*sqrt(v0y);
-    return log(z) / log(1 - drag) * (0.5 + 1 / drag) * g +
+    v0y = signum * sqrt(v0y);
+    return log(z) / log(1 - drag) / drag * g +
            (1 - drag * 0.5) * (v0y - g / drag) * (1 - z) / drag;
   }
 
