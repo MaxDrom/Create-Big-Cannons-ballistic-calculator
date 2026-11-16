@@ -24,3 +24,5 @@ target_compile_options(ballistics_py PRIVATE -O3 -march=native)
 
 # Связываем модуль с Python (автоматически пропишет пути к Python.h)
 target_link_libraries(ballistics_py PRIVATE pybind11::module Python::Python)
+
+add_custom_command(TARGET ballistics_py POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/src/main.py ${CMAKE_CURRENT_BINARY_DIR} )
