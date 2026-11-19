@@ -1,0 +1,21 @@
+[package]
+name = "wasm_api"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = 3
+lto = true
+
+#[target.wasm32-wasi]
+# rustflags = ["-C", "panic=unwind"]
+
+[dependencies]
+nalgebra = "0.35.0"
+bal_core = {path = "../bal_core"}
+cc_wasm_api = "0.4.9"
+paste = "1.0.15"
+

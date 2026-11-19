@@ -64,6 +64,7 @@ impl<T: Model> Solver<T> {
 
         result
     }
+
     #[autodiff_forward(df, Const, Const, Dual, Dual)]
     fn forward<U: Bvp>(&self, bvp: &U, vals: &Vector3<f64>, f: &mut Vector3<f64>) {
         let yaw = vals[0];
