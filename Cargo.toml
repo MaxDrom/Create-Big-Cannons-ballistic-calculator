@@ -2,10 +2,6 @@
 members = ["bal_core"]
 resolver = "2"
 
-
-[profile.release.package.bal_core]
-rustflags = ["-Zautodiff=Enable"]
-
 [package]
 name = "bal_rust"
 version = "0.1.0"

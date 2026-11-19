@@ -50,23 +50,6 @@ impl Bvp for MovingTarget {
         *result = z.fixed_rows::<3>(0) - target_pos;
     }
 
-    fn jacobi(
-        &self,
-        _z: &Vector6<f64>,
-        time: f64,
-        result_z: &mut Matrix3x6<f64>,
-        result_t: &mut Vector3<f64>,
-    ) {
-        // Частная производная dF/dz = [I_3x3 | 0_3x3]
-        result_z.fill(0.0);
-        result_z[(0, 0)] = 1.0;
-        result_z[(1, 1)] = 1.0;
-        result_z[(2, 2)] = 1.0;
-
-        // Частная производная dF/dt = -v_target(t) = -(v0 + a*t)
-        *result_t = -(self.vel0 + self.acc * time);
-    }
-
     fn get_pos(&self) -> &Vector3<f64> {
         &self.pos0
     }

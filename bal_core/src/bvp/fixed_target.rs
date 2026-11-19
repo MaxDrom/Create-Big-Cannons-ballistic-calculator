@@ -35,21 +35,6 @@ impl Bvp for FixedTarget {
         *result = x - self.pos;
     }
 
-    fn jacobi(
-        &self,
-        _z: &Vector6<f64>,
-        _time: f64,
-        result_z: &mut Matrix3x6<f64>,
-        resutl_t: &mut Vector3<f64>,
-    ) {
-        resutl_t.fill(0.0);
-
-        result_z.fill(0.0);
-        result_z[(0, 0)] = 1.0;
-        result_z[(1, 1)] = 1.0;
-        result_z[(2, 2)] = 1.0;
-    }
-
     fn get_pos(&self) -> &Vector3<f64> {
         &self.pos
     }
