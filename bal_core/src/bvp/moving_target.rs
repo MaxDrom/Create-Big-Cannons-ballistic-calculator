@@ -1,6 +1,6 @@
 use super::Bvp;
 extern crate nalgebra as na;
-use na::{Matrix3x6, Vector3, Vector6};
+use na::{Vector3, Vector6};
 use serde::Deserialize;
 use serde_aux::field_attributes::deserialize_number_from_string;
 #[derive(Deserialize)]
